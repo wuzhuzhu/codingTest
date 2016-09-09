@@ -10,6 +10,9 @@ import {
 import { Field } from 'react-redux-form';
 import Task from '../containers/task';
 
+// We could use custom_component in production instead of write these css.
+// https://davidkpiano.gitbooks.io/react-redux-form/content/custom_components.html
+
 const styles = {
   input: {
     height: '34px',
