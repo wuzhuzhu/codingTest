@@ -1,18 +1,32 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  Button,
+  Button, ButtonGroup, DropdownButton, MenuItem
 } from 'react-bootstrap';
 
 const Task = (props) => {
-  const { removeTask } = props
+  const { onSelectPriority, removeTask, PRIORITY_MAP } = props
   const handleRemoveTask = (taskId, e) => {
     e.preventDefault();
     removeTask(taskId);
   }
-  const {text, _id} = props.task;
+  const {text, _id, priorityValue} = props.task;
   return (
-    <li>{text} <Button bsStyle="danger" style={{float: "right"}}
-                       onClick={handleRemoveTask.bind(this, _id)}> Remove Task </Button></li>
+    <li>
+      {text}
+      <ButtonGroup style={{float: "right", marginBottom: 15}}>
+        <Button bsStyle="danger" onClick={handleRemoveTask.bind(this, _id)}>Remove</Button>
+        <DropdownButton
+          bsStyle="warning"
+          title={priorityValue===200 ? "Priority" : PRIORITY_MAP[priorityValue]}
+          id="bg-nested-dropdown"
+          className = "btn-fix-width"
+          onSelect={(eventKey, event) => onSelectPriority(eventKey, _id)}>
+          {Object.keys(PRIORITY_MAP).map((key) => {
+            return <MenuItem eventKey={parseInt(key)}>{PRIORITY_MAP[key]}</MenuItem>
+          })}
+        </DropdownButton>
+      </ButtonGroup>
+    </li>
   );
 }
 
