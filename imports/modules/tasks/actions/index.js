@@ -9,7 +9,7 @@ export const subscribe = () => {
       if (subs.ready()) {
         dispatch({
           type: types.UPDATE_TASK,
-          tasks: Collections.Todos.find().fetch(),
+          tasks: Collections.Todos.find({},{sort: {priorityValue: -1}}).fetch(),
         })
       }
     })
@@ -17,14 +17,15 @@ export const subscribe = () => {
   }
 }
 
-export const addTask = (task) => {
+export const addTask = () => {
   return (dispatch, getState, { Meteor }) => {
     const state = getState()
-    const text = get(state, 'task')
-    const isValid = get(state, 'taskForm.fields.text.valid')
+    const task = get(state, 'task')
+    const text = get(state, 'task.text')
+    const isValid = text && get(state, 'taskForm.fields.text.valid') && textIsValid(text)
 
     if (isValid) {
-      Meteor.call("addTask", text, (err, res) => {
+      Meteor.call("addTask", task, (err, res) => {
         if (err) {
           return console.error(err)
         }
@@ -50,4 +51,14 @@ function textIsValid(text) {
 
 export const onBlur = () => {
   return actions.validate('task.text', textIsValid)
+}
+
+export const onSelectPriority = (priorityValue, taskId) => {
+  return (dispatch, getState, { Meteor }) => {
+    Meteor.call('tasks.update.priority', priorityValue, taskId, (e,r) => {
+      if (e) {
+        return console.error(e)
+      }
+    })
+  }
 }

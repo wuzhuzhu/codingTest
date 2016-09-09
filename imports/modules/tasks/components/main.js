@@ -50,7 +50,7 @@ const App = class extends Component {
 
     return (
       <div className="container">
-        <header>
+        <header style={{marginBottom:15}}>
           <h1>Todo List ({(tasks ||[] ).length})</h1>
         </header>
         <FormGroup>
