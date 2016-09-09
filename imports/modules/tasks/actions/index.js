@@ -1,5 +1,6 @@
 import * as types from '../constants/tasks';
 import { get } from 'lodash';
+import { actions } from 'react-redux-form';
 
 export const subscribe = () => {
   return (dispatch, getState, { Meteor, Tracker, Collections }) => {
@@ -20,9 +21,18 @@ export const addTask = (task) => {
   return (dispatch, getState, { Meteor }) => {
     const state = getState()
     const text = get(state, 'task')
-    Meteor.call("addTask", text, (err, res) => {
-      if (err) return console.error(err)
-    });
+    const isValid = get(state, 'taskForm.fields.text.valid')
+
+    if (isValid) {
+      Meteor.call("addTask", text, (err, res) => {
+        if (err) {
+          return console.error(err)
+        }
+        else dispatch(actions.reset('task.text'))
+      });
+    } else {
+      return
+    }
   }
 }
 
@@ -34,3 +44,10 @@ export const removeTask = (taskId) => {
   }
 }
 
+function textIsValid(text) {
+  return text && text.length > 5;
+}
+
+export const onBlur = () => {
+  return actions.validate('task.text', textIsValid)
+}

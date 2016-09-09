@@ -21,7 +21,7 @@ const styles = {
     color: '#555',
     backgroundColor: '#fff',
     border: '1px solid #ccc',
-    // border-radius: 4px
+    borderRadius: '4px',
     // -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)
     // box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)
     // -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s
@@ -34,11 +34,14 @@ const styles = {
     width: '100%',
     marginBottom: 0,
   },
+  errrorText: {   // use ControlLabel when switch to customed Field.
+    color: 'red',
+  },
 }
 
 const App = class extends Component {
   render() {
-    const { tasks, addTask } = this.props
+    const { tasks, addTask, onBlur, isValid } = this.props
     const renderTasks = () => {
       return (tasks||[]).map((task) => (
         <Task key={task._id} task={task} />
@@ -53,13 +56,19 @@ const App = class extends Component {
         <FormGroup>
           <InputGroup>
             <Field model="task.text">
-              <input type="text" style={styles.input} />
+              <input
+                onBlur={onBlur}
+                type="text"
+                style={styles.input}
+              />
             </Field>
             {/*<FormControl type="text" ref="taskInput"/>*/}
+
             <InputGroup.Button>
               <Button bsStyle="info" onClick={addTask}> Add Task </Button>
             </InputGroup.Button>
           </InputGroup>
+          <p style={styles.errrorText}>{!isValid ? "Please make sure the text is longer than 5. " : void 0}</p>
         </FormGroup>
         <ul>
           {renderTasks()}

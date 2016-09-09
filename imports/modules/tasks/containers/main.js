@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Main from '../components/main';
-import { subscribe, addTask } from  '../actions';
+import { subscribe, addTask, onBlur } from  '../actions';
+import { get } from 'lodash'
 
 // dummy
 class container extends Component {
@@ -17,16 +18,19 @@ class container extends Component {
 }
 
 // container
-const mapState = ({Tasks}) => {
-  const {tasks, count} = Tasks
+const mapState = (state) => {
+  const tasks = get(state, 'Tasks.tasks')
+  const count = get(state, 'Tasks.count')
+  const isValid = get(state, 'taskForm.fields.text.valid')
   return {
-    tasks, count
+    tasks, count, isValid
   }
 }
 const mapDispatch = (dispatch, getState) => {
   return {
     subscribe: () => dispatch(subscribe()),
     addTask: () => dispatch(addTask()),
+    onBlur: () => dispatch(onBlur()),
   }
 }
 export default connect(mapState, mapDispatch)(container)
