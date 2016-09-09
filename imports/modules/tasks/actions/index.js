@@ -1,4 +1,5 @@
 import * as types from '../constants/tasks';
+import { get } from 'lodash';
 
 export const subscribe = () => {
   return (dispatch, getState, { Meteor, Tracker, Collections }) => {
@@ -17,7 +18,9 @@ export const subscribe = () => {
 
 export const addTask = (task) => {
   return (dispatch, getState, { Meteor }) => {
-    Meteor.call("addTask", task, (err, res) => {
+    const state = getState()
+    const text = get(state, 'task')
+    Meteor.call("addTask", text, (err, res) => {
       if (err) return console.error(err)
     });
   }
@@ -30,3 +33,4 @@ export const removeTask = (taskId) => {
     });
   }
 }
+

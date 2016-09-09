@@ -26,7 +26,7 @@ const mapState = ({Tasks}) => {
 const mapDispatch = (dispatch, getState) => {
   return {
     subscribe: () => dispatch(subscribe()),
-    addTask: (task) => dispatch(addTask(task)),
+    addTask: () => dispatch(addTask()),
   }
 }
 export default connect(mapState, mapDispatch)(container)

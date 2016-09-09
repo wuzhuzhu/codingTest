@@ -7,19 +7,35 @@ import {
   InputGroup,
   FormControl
 } from 'react-bootstrap';
+import { Field } from 'react-redux-form';
 import Task from '../containers/task';
+
+const styles = {
+  input: {
+    height: '34px',
+    padding: '6px 12px',
+    fontSize: '14px',
+    color: '#555',
+    backgroundColor: '#fff',
+    border: '1px solid #ccc',
+    // border-radius: 4px
+    // -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)
+    // box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)
+    // -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s
+    // -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+    // transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+    display: 'table-cell',
+    position: 'relative',
+    zIndex: 2,
+    float: 'left',
+    width: '100%',
+    marginBottom: 0,
+  },
+}
 
 const App = class extends Component {
   render() {
     const { tasks, addTask } = this.props
-    const handleAddTask = (e) => {
-      e.preventDefault();
-      // Have to use findDOMNode with react-bootstrap
-      const node = findDOMNode(this.refs.taskInput);
-      const task = {text: node.value};
-      addTask(task);
-      node.value = null;
-    }
     const renderTasks = () => {
       return (tasks||[]).map((task) => (
         <Task key={task._id} task={task} />
@@ -33,9 +49,12 @@ const App = class extends Component {
         </header>
         <FormGroup>
           <InputGroup>
-            <FormControl type="text" ref="taskInput"/>
+            <Field model="task.text">
+              <input type="text" style={styles.input} />
+            </Field>
+            {/*<FormControl type="text" ref="taskInput"/>*/}
             <InputGroup.Button>
-              <Button bsStyle="info" onClick={handleAddTask.bind(this)}> Add Task </Button>
+              <Button bsStyle="info" onClick={addTask}> Add Task </Button>
             </InputGroup.Button>
           </InputGroup>
         </FormGroup>
