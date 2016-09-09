@@ -19,6 +19,7 @@ const Task = (props) => {
           bsStyle="warning"
           title={priorityValue===200 ? "Priority" : PRIORITY_MAP[priorityValue]}
           id="bg-nested-dropdown"
+          className = "btn-fix-width"
           onSelect={(eventKey, event) => onSelectPriority(eventKey, _id)}>
           {Object.keys(PRIORITY_MAP).map((key) => {
             return <MenuItem eventKey={parseInt(key)}>{PRIORITY_MAP[key]}</MenuItem>

@@ -126,3 +126,7 @@ header .hide-completed {
     padding-bottom: 5px;
   }
 }
+
+.btn-fix-width {
+  width: 120px;
+}
